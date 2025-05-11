@@ -1,12 +1,9 @@
 import Server from './framework/server';
-import RequestObject from "./framework/object/request.object";
 import ActionControl from './framework/action/action.control';
 import SServer from "./app/sserver";
 import dotenv from 'dotenv';
 import path from "path";
-import {URL} from "url";
-import {IncomingMessage, RequestListener, ServerResponse} from "http";
-import {HttpType} from "./framework/object/request.object";
+import {IncomingMessage, ServerResponse} from "http";
 
 async function init() {
     // 환경 변수로부터 PORT와 SETTING을 읽고, 없으면 기본값 사용
