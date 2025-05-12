@@ -1,8 +1,8 @@
 import {WebUtil} from "@/util/web.util";
 import {TypeUtil} from "@/util/type.util";
 
-export default {
-    async get<T>(con: new (data: any) => T, type: string): Promise<Array<T>> {
+export namespace ModelService {
+    export async function get<T>(con: new (data: any) => T, type: string): Promise<Array<T>> {
         const res = await WebUtil.get('/model/detail', {
             params: {
                 type: type

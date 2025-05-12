@@ -1,22 +1,29 @@
 import {createStore} from 'vuex';
 import Category from "@/data/inquiry/category";
-import ModelService from "@/service/model";
-import InquiryService from "@/service/inquiry";
+import {ModelService} from "@/service/model";
+import {InquiryService} from "@/service/inquiry";
 
 export default createStore({
     state () {
         return {
             selectedCategory: 0,
             categories: [],
+
+            selectedInquiry: 0,
             inquiries: []
         }
     },
     getters: {
+        // category
         getCategory(state) {
             return state.selectedCategory;
         },
         getCategories(state) {
             return state.categories;
+        },
+        // inquiry
+        getInquiry(state) {
+            return state.selectedInquiry;
         },
         getInquiries(state) {
             return state.inquiries;
@@ -28,6 +35,9 @@ export default createStore({
         },
         fetchCategories(state, categories) {
             state.categories = categories;
+        },
+        setInquiry(state, inquiry) {
+            state.selectedInquiry = inquiry;
         },
         fetchInquiries(state, inquiries) {
             state.inquiries = inquiries

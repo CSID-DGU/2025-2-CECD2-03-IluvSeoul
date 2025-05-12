@@ -20,7 +20,7 @@ export default class InquiryMessage implements Bean {
         this.sender_id = data.sender_id
         this.summary = data.summary;
         this.content = data.content;
-        this.create_at = data.create_at
+        this.create_at = moment(data.create_at)
     }
 
 
@@ -36,7 +36,7 @@ export default class InquiryMessage implements Bean {
             ["sender_id", this.sender_id],
             ["summary", this.summary],
             ["content", this.content],
-            ["create_at", this.create_at]
+            ["create_at", this.create_at.unix()]
         ])
     }
     //
