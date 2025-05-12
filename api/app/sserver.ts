@@ -2,7 +2,7 @@ import Setting from "./setting";
 import {DB} from "../framework/control/DB";
 import AuthMain from "../framework/module/auth/auth.main";
 import AuthManager from "./module/auth/auth.manager";
-import {InquiryLogic} from "./module/inquiry/inquiry.logic";
+import {ModelLogic} from "./module/model/model.logic";
 
 export default class SServer {
     static encoding: string = 'utf8';
@@ -15,7 +15,7 @@ export default class SServer {
                 AuthMain.init(auth);
 
                 const session = await DB.getSession(DB.Type.main);
-                await InquiryLogic.init(session);
+                await ModelLogic.reloadAll(session);
             })
             .catch(error => {
                 console.log(error);

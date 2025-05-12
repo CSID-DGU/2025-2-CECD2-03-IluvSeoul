@@ -15,6 +15,9 @@ export default class Category implements Bean {
         return list.map(e => new Category(e))
     }
     getResponseMap(): Map<string, any> {
-        return undefined;
+        return new Map<string, any>([
+            ["id", this.id],
+            ["name", this.name]
+        ]);
     }
 }

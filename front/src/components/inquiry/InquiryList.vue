@@ -9,7 +9,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="inquiry in filteredInquiries" :key="inquiry.id"
+        <tr v-for="inquiry in inquiries" :key="inquiry.id"
             @click="$emit('select-inquiry', inquiry)">
             <td>{{ inquiry.id }}</td>
             <td>{{ inquiry.title }}</td>
@@ -18,42 +18,23 @@
               {{ inquiry.resolved ? '해결' : '미해결' }}
             </span>
             </td>
-            <td>{{ inquiry.time }}</td>
+            <td>{{ inquiry.create_at }}</td>
         </tr>
         </tbody>
     </table>
 </template>
 
-<script>
-import InquiryService from "@/service/inquiry";
-export default {
-    name: 'InquiryList',
-    data() {
-        return {
-            filteredInquiries: []
-        }
-    },
-    methods: {
-        fetchInquiries(category) {
-            this.filteredInquiries = InquiryService.getList().filter(
-                e => e.category === category
-            );
-        }
-    },
-    mounted() {
-        this.fetchInquiries(this.currentCategory);
-    },
-    computed: {
-        currentCategory() {
-            return this.$store.state.inquiry.current;
-        }
-    },
-    watch: {
-        currentCategory(newVal) {
-            this.fetchInquiries(newVal);
-        }
-    }
-}
+<script lang="ts" setup>
+import {computed} from 'vue';
+import {useStore} from "vuex";
+
+const store = useStore();
+
+const inquiries = computed(() => store.getters.getInquiries)
+// const currentCategory = computed(() => store.getters.getCategory);
+
+
+
 </script>
 
 <style scoped>

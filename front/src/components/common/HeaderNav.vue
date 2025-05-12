@@ -15,16 +15,11 @@
     </nav>
 </template>
 
-<script>
-import InquiryService from '@/service/inquiry'
-export default {
-    name: 'HeaderNav',
-    data() {
-        return {
-            inquiries: InquiryService.getList()
-        }
-    }
-}
+<script lang="ts" setup>
+import {ref} from 'vue';
+import Inquiry from "@/data/inquiry/inquiry";
+
+const inquiries = ref<Array<Inquiry>>([]);
 </script>
 
 <style scoped>

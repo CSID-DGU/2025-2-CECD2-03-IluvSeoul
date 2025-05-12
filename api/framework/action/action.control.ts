@@ -77,6 +77,10 @@ class ActionControl {
             body += chunk;
         });
 
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, Access-Token, Uid');
+        res.setHeader('Access-Control-Expose-Headers', 'Origin, Content-Type, Accept, Authorization, Access-Token, Uid');
+
         req.on('end', async () => {
             const contentType = req.headers['content-type'];
 

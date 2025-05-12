@@ -9,13 +9,13 @@ import Node from "../../framework/action/data/node";
 @Action({value: 'inquiry', auth: Auth.unnecessary})
 class InquiryAction extends Action_base {
     @ActionMethod({value: 'list'})
-    async page(request: RequestObject) {
+    async list(request: RequestObject) {
         await InquiryLogic.list(request);
         Print.json(request, Node.beanList("inquiry_list", request.getData("inquiry_list")));
     }
 
     @ActionMethod({value: 'detail'})
-    async some(request: RequestObject) {
+    async detail(request: RequestObject) {
         const id = request.getParameterInt("id", 0);
         if (id === 0) {
             request.error("invalid_parameter")

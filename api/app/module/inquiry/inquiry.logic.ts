@@ -6,15 +6,6 @@ import InquiryAttachment from "./data/inquiry.attachment";
 import InquiryMessage from "./data/inquiry.message";
 
 export namespace InquiryLogic {
-    let categoryMap: Map<number, Category>;
-    export async function init(session: DB.TP): Promise<void> {
-        const cList = await Category.list(session);
-        categoryMap = cList.reduce((a, b) => {
-            a[b.id] = b;
-            return a;
-        }, new Map<number, Category>([]))
-    }
-
     export async function list(request: RequestObject): Promise<void> {
         request.setData("inquiry_list", await Inquiry.list(request))
     }

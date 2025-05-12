@@ -8,16 +8,14 @@
     </div>
 </template>
 
-<script>
-
+<script setup lang="ts">
+import {onMounted} from "vue";
 import HeaderNav from "@/components/common/HeaderNav.vue";
-import SideNav from "@/components/common/SideNav.vue";
-
-export default {
-  name: 'App',
-  components: {
-      HeaderNav,
-      SideNav
-  }
-}
+import SideNav from "@/components/inquiry/SideNav.vue";
+import {useStore} from "vuex";
+const store = useStore()
+onMounted(() => {
+    store.dispatch('fetchCategories')
+    store.dispatch('fetchInquiries')
+})
 </script>

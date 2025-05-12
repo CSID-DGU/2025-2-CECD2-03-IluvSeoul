@@ -1,5 +1,7 @@
 export default class Routes {
-    constructor(path, component) {
+    path: string;
+    component: any;
+    constructor(path: string, component: any) {
         this.path = path;
         this.component = component;
     }
