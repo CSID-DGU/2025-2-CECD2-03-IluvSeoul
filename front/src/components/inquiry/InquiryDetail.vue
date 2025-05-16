@@ -45,8 +45,8 @@
             </div>
         </div>
     </div>
-    <div v-else>
-
+    <div v-else class="placeholder-glow">
+        <span class="placeholder col-12"></span>
     </div>
 </template>
 
