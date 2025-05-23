@@ -1,0 +1,51 @@
+{
+  "name": "front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build",
+    "lint": "vite lint"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "core-js": "^3.8.3",
+    "jquery": "^3.7.1",
+    "vue": "^3.2.13",
+    "vue-class-component": "^8.0.0-0",
+    "vue-router": "^4.5.1",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.26.0",
+    "vue-eslint-parser": "^10.0.0",
+    "eslint-plugin-vue": "^10.1.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vue-tsc": "^2.2.10",
+    "@vitejs/plugin-vue": "^5.2.4"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended",
+      "@vue/typescript"
+    ],
+    "parserOptions": {
+      "parser": "@typescript-eslint/parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}

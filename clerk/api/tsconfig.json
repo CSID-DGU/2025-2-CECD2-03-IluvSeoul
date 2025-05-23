@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "outDir": "dist",
+        "experimentalDecorators": true,
+        "target": "ES2022",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "allowSyntheticDefaultImports": true
+    },
+    //    "include": [],
+    "exclude": ["dist", "node_modules"]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "framework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production SETTING=live nodemon -r dotenv/config index.ts dotenv_config_path=config/live.env",
+    "dev": "nodemon index.ts",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "clear": "rm -rf ./dist",
+    "postbuild": "cp -r ./config ./dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/morgan": "^1.9.3",
+    "@types/winston": "^2.4.4",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.3",
+    "querystring": "^0.2.1",
+    "redis": "^4.7.0",
+    "typescript": "^4.8.3",
+    "url": "^0.11.4",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.18",
+    "glob": "^11.0.0",
+    "nodemon": "^3.1.7",
+    "reflect-metadata": "^0.2.2",
+    "ts-node": "^10.9.1",
+    "cross-env": "^7.0.3"
+  }
+}
