@@ -1,8 +1,0 @@
-.idea/*
-__database/*
-node_modules/*
-dist/*
-logs/*
-config/dev.env
-config/live.env
-secure
