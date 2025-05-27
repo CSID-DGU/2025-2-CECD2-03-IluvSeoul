@@ -1,3 +1,4 @@
+from core.action.action_control import ActionControl
 from core.setting import Setting
 
 if __name__ == '__main__':
@@ -8,4 +9,6 @@ if __name__ == '__main__':
 
     # server run
     server = HttpServer()
+    HttpServer.app = server.app
+    ActionControl.init()
     server.run()
