@@ -3,6 +3,7 @@ import {TypeUtil} from "@/util/type.util";
 import {WebUtil} from "@/util/web.util";
 import InquiryAttachment from "@/data/inquiry/inquiry.attachment";
 import InquiryMessage from "@/data/inquiry/inquiry.message";
+import InquiryTag from "@/data/inquiry/inquiry.tag";
 
 // Inquiry 에 관한 axios 액션 정의
 export namespace InquiryService {
@@ -25,6 +26,9 @@ export namespace InquiryService {
         }
         if (res.inquiry_message) {
             inquiry.messages = TypeUtil.toArray(res.inquiry_message).map(e => new InquiryMessage(e))
+        }
+        if (res.inquiry_tag) {
+            inquiry.tags = TypeUtil.toArray(res.inquiry_tag).map(e => new InquiryTag(e))
         }
 
         console.log(inquiry)

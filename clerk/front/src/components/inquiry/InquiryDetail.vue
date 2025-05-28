@@ -37,6 +37,13 @@
             </div>
         </div>
 
+        <div class="tag-section" v-if="inquiry.tags !== null">
+            <h5>태그</h5>
+            <div class="tag-list">
+                <span class="badge text-bg-info m-1" v-for="tag in inquiry.tags">#{{ TagMap[tag.tag_id].name }}</span>
+            </div>
+        </div>
+
         <div class="reply-section">
         <textarea class="form-control" v-model="replyText"
                   placeholder="답변을 입력하세요..."></textarea>
@@ -65,6 +72,8 @@ const selectedInquiryId = parseInt(TypeUtil.toArray($route.params.id)[0]);
 
 const inquiry = ref<Inquiry>();
 const replyText = ref<string>();
+
+const TagMap = computed(() => $store.getters.getTagMap);
 
 onMounted(async () => {
     inquiry.value = await InquiryService.detail(selectedInquiryId)

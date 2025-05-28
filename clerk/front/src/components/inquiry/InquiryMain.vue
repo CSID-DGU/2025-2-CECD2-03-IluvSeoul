@@ -12,7 +12,8 @@ import {onMounted} from "vue";
 import {useStore} from "vuex";
 const $store = useStore()
 onMounted(() => {
-    $store.dispatch('fetchCategories')
+    $store.dispatch('fetchTags')
+    $store.dispatch('fetchDepartments')
     $store.dispatch('fetchInquiries')
 })
 

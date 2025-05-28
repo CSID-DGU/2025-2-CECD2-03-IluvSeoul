@@ -1,2 +1,2 @@
 SELECT id, `name`
-FROM _category
+FROM _department

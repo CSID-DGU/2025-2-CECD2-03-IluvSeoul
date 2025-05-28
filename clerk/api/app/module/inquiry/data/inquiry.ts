@@ -3,12 +3,11 @@ import moment from "moment-timezone";
 import RequestObject from "../../../../framework/object/request.object";
 import {DB} from "../../../../framework/control/DB";
 import {TypeUtil} from "../../../../framework/utils/type.util";
-import {TimeUtil} from "../../../../framework/utils/time.util";
 
 export default class Inquiry implements Bean {
     id: number;
     title: string;
-    category_id: number;
+    department_id: number;
     message_id: number;
     resolved: number;
     create_at: moment.Moment;
@@ -17,7 +16,7 @@ export default class Inquiry implements Bean {
     constructor(data: any) {
         this.id = data.id;
         this.title = data.title;
-        this.category_id = data.category_id;
+        this.department_id = data.department_id;
         this.message_id = data.message_id;
         this.resolved = data.resolved;
         this.create_at = moment(data.create_at);
@@ -32,8 +31,11 @@ export default class Inquiry implements Bean {
         return new Inquiry(row);
     }
 
-    static async list(request: RequestObject) {
-        const row = TypeUtil.toArray(await request.list(DB.Type.main, 'inquiry', 'list', null));
+    static async list(request: RequestObject, tag: number, page: number) {
+        const row = TypeUtil.toArray(await request.list(DB.Type.main, 'inquiry', 'list', {
+            tag,
+            page
+        }));
         return row.map(e => new Inquiry(e))
     }
 
@@ -41,7 +43,7 @@ export default class Inquiry implements Bean {
         return new Map<string, any>([
             ['id', this.id],
             ['title', this.title],
-            ['category_id', this.category_id],
+            ['department_id', this.department_id],
             ['resolved', this.resolved === 1],
             ['create_at', this.create_at.unix()],
             ['update_at', this.update_at.unix()],

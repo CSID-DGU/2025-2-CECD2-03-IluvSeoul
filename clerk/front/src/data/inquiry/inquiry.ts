@@ -1,10 +1,11 @@
 import InquiryAttachment from "@/data/inquiry/inquiry.attachment";
 import InquiryMessage from "@/data/inquiry/inquiry.message";
+import InquiryTag from "@/data/inquiry/inquiry.tag";
 
 export default class Inquiry {
     id: number;
     title: string;
-    category_id: number;
+    department_id: number;
     message_id: number;
     resolved: boolean;
     create_at: number;
@@ -12,10 +13,11 @@ export default class Inquiry {
 
     attachments: Array<InquiryAttachment> | null
     messages: Array<InquiryMessage> | null
+    tags: Array<InquiryTag> | null
     constructor(data: any) {
         this.id = data.id;
         this.title = data.title;
-        this.category_id = data.category_id;
+        this.department_id = data.department_id;
         this.message_id = data.message_id;
         this.resolved = data.resolved;
         this.create_at = data.create_at;
@@ -23,5 +25,6 @@ export default class Inquiry {
 
         this.attachments = null;
         this.messages = null;
+        this.tags = null;
     }
 }

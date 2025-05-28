@@ -1,25 +1,40 @@
 import {createStore} from 'vuex';
-import Category from "@/data/inquiry/category";
+import Department from "@/data/inquiry/department";
 import {ModelService} from "@/service/model";
 import {InquiryService} from "@/service/inquiry";
+import Tag from "@/data/inquiry/tag";
 
 export default createStore({
     state () {
         return {
-            selectedCategory: 0,
-            categories: [],
+            selectedTag: 0,
+            tagMap: {},
+            tags: [],
+
+            selectedDepartment: 0,
+            departments: [],
 
             selectedInquiry: 0,
             inquiries: []
         }
     },
     getters: {
-        // category
-        getCategory(state) {
-            return state.selectedCategory;
+        // tag
+        getTag(state) {
+            return state.selectedTag;
         },
-        getCategories(state) {
-            return state.categories;
+        getTagMap(state) {
+            return state.tagMap;
+        },
+        getTags(state) {
+            return state.tags;
+        },
+        // department
+        getDepartment(state) {
+            return state.selectedDepartment;
+        },
+        getDepartments(state) {
+            return state.departments;
         },
         // inquiry
         getInquiry(state) {
@@ -30,11 +45,21 @@ export default createStore({
         }
     },
     mutations: {
-        setCategory(state, category) {
-            state.selectedCategory = category;
+        setTag(state, tag) {
+            state.selectedTag = tag;
         },
-        fetchCategories(state, categories) {
-            state.categories = categories;
+        fetchTags(state, tags) {
+            state.tags = tags;
+            state.tagMap = tags.reduce((a, b) => {
+                a[b.id] = b;
+                return a;
+            }, {})
+        },
+        setDepartment(state, department) {
+            state.selectedDepartment = department;
+        },
+        fetchDepartments(state, departments) {
+            state.departments = departments;
         },
         setInquiry(state, inquiry) {
             state.selectedInquiry = inquiry;
@@ -44,9 +69,14 @@ export default createStore({
         }
     },
     actions: {
-        fetchCategories(state) {
-            ModelService.get<Category>(Category, 'category')
-                .then(r => state.commit('fetchCategories', r))
+        fetchTags(state) {
+            ModelService.get<Tag>(Tag, 'tag')
+                .then(r => state.commit('fetchTags', r))
+                .catch(e => console.log(e))
+        },
+        fetchDepartments(state) {
+            ModelService.get<Department>(Department, 'department')
+                .then(r => state.commit('fetchDepartments', r))
                 .catch(e => console.log(e))
         },
         fetchInquiries(state) {

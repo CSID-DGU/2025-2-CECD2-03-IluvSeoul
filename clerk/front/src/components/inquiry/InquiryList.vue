@@ -39,8 +39,8 @@ import {useRouter} from "vue-router";
 const $store = useStore();
 const $router = useRouter();
 
-const selectedCategory = computed(() => $store.getters.getCategory)
-const inquiries = computed(() => $store.getters.getInquiries.filter((e: Inquiry) => selectedCategory.value === 0 || e.category_id === selectedCategory.value))
+const selectedDepartment = computed(() => $store.getters.getDepartment)
+const inquiries = computed(() => $store.getters.getInquiries.filter((e: Inquiry) => selectedDepartment.value === 0 || e.department_id === selectedDepartment.value))
 
 const selectInquiry = (inquiry_id: number) => {
     $store.commit('setInquiry', inquiry_id);

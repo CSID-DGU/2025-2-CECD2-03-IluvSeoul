@@ -10,7 +10,9 @@ import Node from "../../framework/action/data/node";
 class InquiryAction extends Action_base {
     @ActionMethod({value: 'list'})
     async list(request: RequestObject) {
-        await InquiryLogic.list(request);
+        const tag = request.getParameterInt("tag", 0);
+        const page = request.getParameterInt("page", 0);
+        await InquiryLogic.list(request, tag, page);
         Print.json(request, Node.beanList("inquiry_list", request.getData("inquiry_list")));
     }
 
@@ -26,7 +28,8 @@ class InquiryAction extends Action_base {
         Print.json(request,
             Node.bean("inquiry", request.getData("inquiry")),
             Node.beanList("inquiry_attachment", request.getData("inquiry_attachment")),
-            Node.beanList("inquiry_message", request.getData("inquiry_message"))
+            Node.beanList("inquiry_message", request.getData("inquiry_message")),
+            Node.beanList("inquiry_tag", request.getData("inquiry_tag"))
         );
     }
 }
