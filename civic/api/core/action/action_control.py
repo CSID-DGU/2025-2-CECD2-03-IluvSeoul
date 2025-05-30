@@ -47,7 +47,16 @@ class ActionControl:
                         def make_view(func):
                             def view(**kwargs):
                                 req = Request()
-                                result = func(instance, req, **kwargs)
+                                result = None
+                                try:
+                                    result = func(instance, req, **kwargs)
+                                    req.commit()
+                                except Exception as e:
+                                    req.rollback()
+                                    result = '500Error'
+                                    print(e)
+                                finally:
+                                    req.close()
                                 return result
 
                             return view
