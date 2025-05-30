@@ -8,7 +8,9 @@ class Request:
     def __init__(self):
         self.json = flask_request.get_json(silent=True) or {}
         self.args = flask_request.args.to_dict()
-        # Initialize a single DB session (transactional)
+        self.files = flask_request.files
+        self.form = flask_request.form
+
         self.conn = DB.get_connection()
         self.cursor = self.conn.cursor()
 
