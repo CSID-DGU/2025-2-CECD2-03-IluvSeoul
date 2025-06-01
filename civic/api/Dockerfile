@@ -19,12 +19,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 프로젝트 파일 복사
 COPY . .
 
-# Flask 애플리케이션 실행을 위한 환경변수 설정
-ENV FLASK_APP=app
-ENV FLASK_ENV=production
-
 # 포트 설정
 EXPOSE 5000
 
 # 애플리케이션 실행
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["python3", "app.py"]
