@@ -26,9 +26,9 @@ class DepartmentMain:
         best_department = None
 
         print(inquiry_tag_map)
-        what_tag = inquiry_tag_map[TagEnum.what.name][0]
-        where_tag = inquiry_tag_map[TagEnum.where.name][0]
-        how_tag = inquiry_tag_map[TagEnum.how.name][0]
+        what_tag = inquiry_tag_map[TagEnum.what.name][0].name
+        where_tag = inquiry_tag_map[TagEnum.where.name][0].name
+        how_tag = inquiry_tag_map[TagEnum.how.name][0].name
         for dept in DepartmentMain.department_json:
             score = 0
             if what_tag in dept["what"]:
