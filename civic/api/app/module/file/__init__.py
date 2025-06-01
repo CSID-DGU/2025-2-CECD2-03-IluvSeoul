@@ -29,3 +29,5 @@ class FileManager:
 
         file.save(file_path)
 
+        return file_path
+

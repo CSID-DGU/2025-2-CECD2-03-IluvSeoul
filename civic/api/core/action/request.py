@@ -20,30 +20,30 @@ class Request:
         return self.cursor
 
     # Query methods
-    def select_one(self, sql: str, params=None):
+    def select_one(self, sql: str, params=None) -> tuple:
         self.load_cursor()
         self.cursor.execute(sql, params or ())
         return self.cursor.fetchone()
 
-    def select_all(self, sql: str, params=None):
+    def select_all(self, sql: str, params=None) -> list:
         self.load_cursor()
         self.cursor.execute(sql, params or ())
         return self.cursor.fetchall()
 
-    def insert(self, sql: str, params=None):
+    def insert(self, sql: str, params=None) -> int:
         self.load_cursor()
         self.cursor.execute(sql, params or ())
         return self.cursor.lastrowid
 
-    def update(self, sql: str, params=None):
+    def update(self, sql: str, params=None) -> None:
         self.load_cursor()
         self.cursor.execute(sql, params or ())
 
-    def delete(self, sql: str, params=None):
+    def delete(self, sql: str, params=None) -> None:
         self.load_cursor()
         self.cursor.execute(sql, params or ())
 
-    def count(self, sql: str, params=None):
+    def count(self, sql: str, params=None) -> int:
         self.load_cursor()
         self.cursor.execute(sql, params or ())
         row = self.cursor.fetchone()

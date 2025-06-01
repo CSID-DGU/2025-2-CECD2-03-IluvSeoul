@@ -1,4 +1,6 @@
-from app.module.file import FileManager
+from flask import jsonify
+
+from app.module.inquiry.inquiry_logic import InquiryLogic
 from core.action.decorators import *
 
 
@@ -26,5 +28,13 @@ class InquiryAction:
 
     @action_method('upload', ['POST'])
     def upload2(self, request):
-        FileManager.save(request)
-        return 'upload'
+        tagger = InquiryLogic.inquiry_receive(request)
+
+        return jsonify({
+            'what': tagger.what_tag,
+            'where': tagger.where_tag,
+            'how': tagger.how_tag,
+            'what_int': tagger.what_tag_int,
+            'where_int': tagger.where_tag_int,
+            'how_int': tagger.how_tag_int
+        })

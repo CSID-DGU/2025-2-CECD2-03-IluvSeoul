@@ -1,3 +1,5 @@
+import os.path
+
 import requests
 import json
 
@@ -11,58 +13,19 @@ class Minwon(ABC):
     def __init__(self, minwon_ID):
         self.minwon_ID=minwon_ID
     
-    def getMinwonID():
+    def getMinwonID(self):
         return self.minwon_ID
 
-
-class Minwon_STT(Minwon):
-    def doSTT(self, audio_path, client_secret):
-        url = "https://clovaspeech-gw.ncloud.com/external/v1/11508/187f49a7bd5739c48d2d608bff99a38ee5464387214d715ecd48ede7f16124ad/recognizer/upload"
-
-        
-        headers = {
-            "X-CLOVASPEECH-API-KEY": "610954bcc970440f9c28080785ed1348",
-            "Accept": "application/json"
-        }
-
-        params = {
-            "language": "ko-KR",
-            "completion": "sync",
-            "diarization": {"enable": False},
-            "fullText": True,
-            "wordAlignment": False
-        }
-
-        try:
-            files = {
-                'media': ('audio.wav', open(audio_path, 'rb'), 'audio/wav'),
-                'params': (None, json.dumps(params), 'application/json')
-            }
-
-            response = requests.post(url, headers=headers, files=files)
-        finally:
-            files['media'][1].close()
-
-        if response.status_code != 200:
-            raise Exception(f"[STT 실패] 응답 코드: {response.status_code}, 내용: {response.text}")
-
-        result = response.json()
-        self.full_text = result.get("text", "")
-
-        if not self.full_text:
-            raise Exception("[STT 실패] 텍스트를 추출할 수 없습니다.")
-
-        return self.full_text
 
 
 class Minwon_Tagging(Minwon):
     def setString(self, full_text):
         self.full_text = full_text
 
-    def setStringTag(self):
-        with open("./MinwonTags.json", "r", encoding="utf-8") as f:
-            tag_data = json.load(f)
+    def setStringTag(self, request):
+        output = request.select_one("SELECT * FROM _json", ())
 
+        tag_data = json.loads(output[0])
         where_tags = [tag for group in tag_data[1]['tag_list'] for tag in group['list']]
         what_tags = [tag for group in tag_data[0]['tag_list'] for tag in group['list']]
         how_tags = tag_data[2]['tag_list']
@@ -91,10 +54,11 @@ class Minwon_Tagging(Minwon):
                 self.what_tag = line.replace("What:", "").strip()
             elif line.startswith("How:"):
                 self.how_tag = line.replace("How:", "").strip()
-    
-    def setIntTag(self):
-        with open("./MinwonTags.json", "r", encoding="utf-8") as f:
-            tag_data = json.load(f)
+
+    def setIntTag(self, request):
+        output = request.select_one("SELECT * FROM _json", ())
+
+        tag_data = json.loads(output[0])
 
         where_tags = [tag for group in tag_data[1]['tag_list'] for tag in group['list']]
         what_tags = [tag for group in tag_data[0]['tag_list'] for tag in group['list']]
@@ -108,7 +72,7 @@ class Minwon_Tagging(Minwon):
         self.where_tag_int = 1 << self.where_tag_index if self.where_tag_index >= 0 else 0
         self.what_tag_int = 1 << self.what_tag_index if self.what_tag_index >= 0 else 0
         self.how_tag_int = 1 << self.how_tag_index if self.how_tag_index >= 0 else 0
-       
+
 
     def getTagSummary(self):
         return {
@@ -128,3 +92,10 @@ class Minwon_Tagging(Minwon):
 
     def getHowTag(self):
         return self.how_tag
+
+    def getIntTag(self):
+        return {
+            'what': self.what_tag_int,
+            'where': self.where_tag_int,
+            'how': self.how_tag_int,
+        }
