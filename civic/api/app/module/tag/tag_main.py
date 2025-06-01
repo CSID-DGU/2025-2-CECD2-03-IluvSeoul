@@ -74,7 +74,7 @@ class TagMain:
         how_tag_int = 1 << how_tag_index if how_tag_index >= 0 else 0
 
         return {
-            TagEnum.what: TagProcResult(what_tag, what_tag_index, what_tag_int),
-            TagEnum.where: TagProcResult(where_tag, where_tag_index, where_tag_int),
-            TagEnum.how: TagProcResult(how_tag, how_tag_index, how_tag_int),
+            TagEnum.what: TagProcResult(what_tag, what_tag_index + 1, what_tag_int),
+            TagEnum.where: TagProcResult(where_tag, where_tag_index + 1, where_tag_int),
+            TagEnum.how: TagProcResult(how_tag, how_tag_index + 1, how_tag_int),
         }
