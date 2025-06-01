@@ -2,46 +2,38 @@ import json
 
 from app.module.gpt.gpt_main import GPTMain
 from app.module.tag.data.tag import Tag
+from app.module.tag.data.tag_enum import TagEnum
+
 
 class TagProcResult:
-    def __init__(self):
-        self.what_tag = ''
-        self.where_tag = ''
-        self.how_tag = ''
-        self.what_tag_int = 0
-        self.where_tag_int = 0
-        self.how_tag_int = 0
+    def __init__(self, value = '', index = 0, int_value = 0):
+        self.value = value
+        self.index = index
+        self.int_value = int_value
 
 class TagMain:
-    tag_data: dict
+    tag_key_value_map: dict[TagEnum, dict[int, Tag]] = []
+    tag_id_map: dict[int, Tag] = {}
     tag_json = None
     @staticmethod
     def init(session):
-        TagMain.tag_data = {
-            0: {}, # what
-            1: {}, # where
-            2: {}, # how
-            'what': {},  # what
-            'where': {},  # where
-            'how': {}  # how
+        TagMain.tag_key_value_map = {
+            TagEnum.what: {},
+            TagEnum.where: {},
+            TagEnum.how: {}
         }
-        type_to_int = {
-            'what': 0,
-            'where': 1,
-            'how': 2
-        }
-        session.execute("SELECT id, `type`, `name` FROM _tag", ())
-        tag_data: list = session.fetchall()
-        for (id, type, name) in tag_data:
-            ntype = type_to_int[type]
-            TagMain.tag_data[type][name] = Tag(id, type, name)
-            TagMain.tag_data[ntype][name] = Tag(id, type, name)
+        session.execute("SELECT id, `type`, `key`, `name` FROM _tag", ())
+        tag_list: list = session.fetchall()
+        for (id, type, key, name) in tag_list:
+            tag = Tag(id, type, key, name)
+            TagMain.tag_key_value_map[TagEnum.from_str(tag.type)][int(tag.key)] = tag
+            TagMain.tag_id_map[id] = tag
 
-        session.execute("SELECT `value` FROM _json", ())
+        session.execute("SELECT `value` FROM _json WHERE `key`='inquiry_tag'", ())
         TagMain.tag_json = json.loads(session.fetchone()[0])
 
     @staticmethod
-    def proc(text) -> TagProcResult:
+    def proc(text) -> dict[TagEnum, TagProcResult]:
         what_tags = [tag for group in TagMain.tag_json[0]['tag_list'] for tag in group['list']]
         where_tags = [tag for group in TagMain.tag_json[1]['tag_list'] for tag in group['list']]
         how_tags = TagMain.tag_json[2]['tag_list']
@@ -62,24 +54,27 @@ class TagMain:
 
         result = GPTMain.proc(content=prompt)
 
-        ret = TagProcResult()
         for line in result.split("\n"):
             if line.startswith("Where:"):
-                ret.where_tag = line.replace("Where:", "").strip()
+                where_tag = line.replace("Where:", "").strip()
             elif line.startswith("What:"):
-                ret.what_tag = line.replace("What:", "").strip()
+                what_tag = line.replace("What:", "").strip()
             elif line.startswith("How:"):
-                ret.how_tag = line.replace("How:", "").strip()
+                how_tag = line.replace("How:", "").strip()
 
         ##########
         ## tag to int logic
         ##########
-        where_tag_index = where_tags.index(ret.where_tag) if ret.where_tag in where_tags else -1
-        what_tag_index = what_tags.index(ret.what_tag) if ret.what_tag in what_tags else -1
-        how_tag_index = how_tags.index(ret.how_tag) if ret.how_tag in how_tags else -1
+        where_tag_index = where_tags.index(where_tag) if where_tag in where_tags else -1
+        what_tag_index = what_tags.index(what_tag) if what_tag in what_tags else -1
+        how_tag_index = how_tags.index(how_tag) if how_tag in how_tags else -1
 
-        ret.where_tag_int = 1 << where_tag_index if where_tag_index >= 0 else 0
-        ret.what_tag_int = 1 << what_tag_index if what_tag_index >= 0 else 0
-        ret.how_tag_int = 1 << how_tag_index if how_tag_index >= 0 else 0
+        where_tag_int = 1 << where_tag_index if where_tag_index >= 0 else 0
+        what_tag_int = 1 << what_tag_index if what_tag_index >= 0 else 0
+        how_tag_int = 1 << how_tag_index if how_tag_index >= 0 else 0
 
-        return ret
+        return {
+            TagEnum.what: TagProcResult(what_tag, what_tag_index, what_tag_int),
+            TagEnum.where: TagProcResult(where_tag, where_tag_index, where_tag_int),
+            TagEnum.how: TagProcResult(how_tag, how_tag_index, how_tag_int),
+        }

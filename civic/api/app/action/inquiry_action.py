@@ -2,12 +2,13 @@ from flask import jsonify
 
 from app.module.inquiry.inquiry_logic import InquiryLogic
 from core.action.decorators import *
+from core.action.request import Request
 
 
 @action('inquiry')
 class InquiryAction:
     @action_method('upload/demo')
-    def upload(self, request):
+    def upload_demo(self, request: Request):
         return '''
         <!DOCTYPE html>
         <html lang="ko">
@@ -27,14 +28,15 @@ class InquiryAction:
         '''
 
     @action_method('upload', ['POST'])
-    def upload2(self, request):
-        tagger = InquiryLogic.inquiry_receive(request)
+    def upload(self, request: Request):
+        (inquiry, tagger) = InquiryLogic.inquiry_receive(request)
 
         return jsonify({
-            'what': tagger.what_tag,
-            'where': tagger.where_tag,
-            'how': tagger.how_tag,
-            'what_int': tagger.what_tag_int,
-            'where_int': tagger.where_tag_int,
-            'how_int': tagger.how_tag_int
+            'inquiry': inquiry.id,
+            'tagger': tagger
         })
+
+    @action_method('after_process')
+    def after_process(self, request: Request):
+        inquiry_id = int(request.args['inquiry_id'])
+        return InquiryLogic.inquiry_department(request, inquiry_id)
