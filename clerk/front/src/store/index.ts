@@ -9,10 +9,9 @@ export default createStore({
         return {
             selectedTag: 0,
             tagMap: {},
-            tags: [],
 
             selectedDepartment: 0,
-            departments: [],
+            departmentMap: {},
 
             selectedInquiry: 0,
             inquiries: []
@@ -27,14 +26,17 @@ export default createStore({
             return state.tagMap;
         },
         getTags(state) {
-            return state.tags;
+            return Object.values(state.tagMap);
         },
         // department
         getDepartment(state) {
             return state.selectedDepartment;
         },
+        getDepartmentMap(state) {
+            return state.departmentMap;
+        },
         getDepartments(state) {
-            return state.departments;
+            return Object.values(state.departmentMap);
         },
         // inquiry
         getInquiry(state) {
@@ -49,7 +51,6 @@ export default createStore({
             state.selectedTag = tag;
         },
         fetchTags(state, tags) {
-            state.tags = tags;
             state.tagMap = tags.reduce((a, b) => {
                 a[b.id] = b;
                 return a;
@@ -59,7 +60,10 @@ export default createStore({
             state.selectedDepartment = department;
         },
         fetchDepartments(state, departments) {
-            state.departments = departments;
+            state.departmentMap = departments.reduce((a, b) => {
+                a[b.id] = b;
+                return a;
+            }, {});
         },
         setInquiry(state, inquiry) {
             state.selectedInquiry = inquiry;

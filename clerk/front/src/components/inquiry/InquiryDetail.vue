@@ -11,11 +11,11 @@
             <div v-for="(message, index) in inquiry.messages" :key="index"
                  class="message" :class="message.sender_type">
                 <div class="message-header">
-                    <strong>{{ message.sender_id }}</strong>
-                    <small>{{ message.create_at }}</small>
+                    <strong>{{ message.sender_type === 'requester' ? '민원인' : '관리자' }}</strong>
+                    <small class="px-1"><Date :date="message.create_at"/></small>
                 </div>
                 <template v-if="message.sender_type === 'requester'">
-                    <div class="message-summary">{{ message.summary }}</div>
+                    <div class="message-summary alert alert-light">{{ message.summary }}</div>
                     <div class="message-content">{{ message.content }}</div>
                 </template>
                 <template v-else>
@@ -58,6 +58,7 @@
 </template>
 
 <script lang="ts" setup>
+import Date from "@/components/common/Date.vue";
 import {computed, onMounted, ref} from "vue";
 import {useStore} from "vuex";
 import Inquiry from "@/data/inquiry/inquiry";

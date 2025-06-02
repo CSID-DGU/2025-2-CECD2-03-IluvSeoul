@@ -2,14 +2,14 @@
     <div class="col-md-3">
         <div class="list-group">
             <a href="javascript:void(0);"
-               v-if="departments.length > 0"
-               v-for="department in departments"
-               :key="department.id"
+               v-if="tags.length > 0"
+               v-for="tag in tags"
+               :key="tag.id"
                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-               :class="{ active: isActive(department.id) }"
-               @click.prevent="clickDepartment(department.id)">
-                {{ department.name }}
-                <span class="badge bg-primary rounded-pill">{{ getDepartmentCount(department.id) }}</span>
+               :class="{ active: isActive(tag.id) }"
+               @click.prevent="clickTag(tag.id)">
+                {{ tag.name }}
+                <span class="badge bg-primary rounded-pill">{{ getTagCount(tag.id) }}</span>
             </a>
             <a v-else
                v-for="i in 3"
@@ -29,23 +29,24 @@ const $store = useStore();
 const $router = useRouter();
 
 const inquiries = computed(() => $store.getters.getInquiries);
-const departments = computed(() => $store.getters.getDepartments);
+const tags = computed(() => $store.getters.getTags);
+const currentTag = computed(() => $store.getters.getTag);
 
-const currentDepartment = computed(() => $store.getters.getDepartment);
+console.log(tags)
 
-const isActive = (department: number) => {
-    return currentDepartment.value === department;
+const isActive = (tag: number) => {
+    return currentTag.value === tag;
 };
 
-const clickDepartment = (department: number) => {
-    $store.commit('setDepartment', department);
+const clickTag = (tag: number) => {
+    $store.commit('setTag', tag);
     $router.push({ name: 'inquiryList' });
 };
 
-const getDepartmentCount = (department: number) => {
-    return department === 0
+const getTagCount = (tag: number) => {
+    return tag === 0
         ? inquiries.value.length
-        : inquiries.value.filter(e => e.department_id === department).length;
+        : inquiries.value.filter(e => e.department_id === tag).length;
 };
 </script>
 
