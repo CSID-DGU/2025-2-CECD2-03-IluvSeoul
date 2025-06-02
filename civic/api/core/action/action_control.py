@@ -2,6 +2,7 @@ import importlib
 import inspect
 import os
 import pkgutil
+import traceback
 from pathlib import Path
 
 from core.action.request import Request
@@ -47,7 +48,16 @@ class ActionControl:
                         def make_view(func):
                             def view(**kwargs):
                                 req = Request()
-                                result = func(instance, req, **kwargs)
+                                result = None
+                                try:
+                                    result = func(instance, req, **kwargs)
+                                    req.commit()
+                                except Exception as e:
+                                    req.rollback()
+                                    result = '500Error'
+                                    print(traceback.format_exc())
+                                finally:
+                                    req.close()
                                 return result
 
                             return view
