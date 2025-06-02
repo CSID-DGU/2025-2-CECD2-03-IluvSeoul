@@ -53,6 +53,9 @@ class InquiryLogic:
                 'int_value': tv.int_value,
             }
 
+        # TODO 제목 처리
+        inquiry.title = str(text)[:30] + '...'
+
         Inquiry.update(request, inquiry)
 
         return inquiry, resMap
