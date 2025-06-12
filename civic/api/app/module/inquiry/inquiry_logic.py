@@ -1,5 +1,6 @@
 from app.module.department.department_main import DepartmentMain
 from app.module.file import FileManager
+from app.module.gpt.gpt_main import GPTMain
 from app.module.inquiry.data.inquiry import Inquiry
 from app.module.inquiry.data.inquiry_message import InquiryMessage
 from app.module.inquiry.data.inquiry_tag import InquiryTag
@@ -26,7 +27,7 @@ class InquiryLogic:
 
             inquiry.message_id = inquiry.message_id + 1
             im = InquiryMessage(inquiry.id, inquiry.message_id, 1)
-            im.summary = text
+            im.summary = InquiryLogic.get_summary(text)
             im.content = text
             InquiryMessage.insert(request, im)
         except Exception as e:
@@ -54,7 +55,7 @@ class InquiryLogic:
             }
 
         # TODO 제목 처리
-        inquiry.title = str(text)[:30] + '...'
+        inquiry.title = InquiryLogic.get_title(text)
 
         Inquiry.update(request, inquiry)
 
@@ -77,3 +78,13 @@ class InquiryLogic:
         inquiry.department_id = DepartmentMain.proc(request, data)
         Inquiry.update(request, inquiry)
         return DepartmentMain.department_id_map[inquiry.department_id]
+
+    @staticmethod
+    def get_title(text: str):
+        result = GPTMain.proc(content=f"""{text}\n이 글을 1줄(10자 이내)로 요약한 것 만들어줘\n양식은 아래와 같아\n[1줄]\n내용""")
+        return result.split('\n')[1]
+
+    @staticmethod
+    def get_summary(text: str):
+        result = GPTMain.proc(content=f"""{text}\n이 글을 3줄 이내로 요약한 것 만들어줘\n양식은 아래와 같아\n[3줄]\n내용""")
+        return "\n".join(result.split('\n')[1:])
