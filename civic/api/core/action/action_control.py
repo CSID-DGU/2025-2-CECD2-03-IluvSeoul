@@ -54,7 +54,7 @@ class ActionControl:
                                     req.commit()
                                 except Exception as e:
                                     req.rollback()
-                                    result = '500Error'
+                                    result = '500Error\n' + traceback.format_exc()
                                     print(traceback.format_exc())
                                 finally:
                                     req.close()
