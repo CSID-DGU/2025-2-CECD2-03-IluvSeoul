@@ -11,6 +11,7 @@ class ControlAction:
     def reload(self, request):
         rtype = request.args['type']
         if rtype == 'tag':
+            TagMain.init(request.cursor)
             request.cursor.execute("TRUNCATE TABLE _tag")
             what_tags = [tag for group in TagMain.tag_json[0]['tag_list'] for tag in group['list']]
             where_tags = [tag for group in TagMain.tag_json[1]['tag_list'] for tag in group['list']]
@@ -23,6 +24,7 @@ class ControlAction:
                     request.insert("INSERT INTO _tag (`type`, `key`, `name`) "
                                    "VALUES (%s, %s, %s)", (type, index + 1, tag))
         elif rtype == 'department':
+            DepartmentMain.init(request.cursor)
             request.cursor.execute("TRUNCATE TABLE _department")
             request.insert("INSERT INTO _department (id, `name`) "
                            "VALUES (%s, %s)", (0, '미분류'))
