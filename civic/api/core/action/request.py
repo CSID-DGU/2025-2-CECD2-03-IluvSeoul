@@ -35,6 +35,11 @@ class Request:
         self.cursor.execute(sql, params or ())
         return self.cursor.lastrowid
 
+    def insert_many(self, sql: str, params=None) -> int:
+        self.load_cursor()
+        self.cursor.executemany(sql, params or [])
+        return self.cursor.lastrowid
+
     def update(self, sql: str, params=None) -> None:
         self.load_cursor()
         self.cursor.execute(sql, params or ())

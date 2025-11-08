@@ -75,9 +75,9 @@ export namespace DB {
         return null;
     }
 
-    export async function update(type: TP, namespace: string, query: string, data: object): Promise<void> {
+    export async function update(type: TP, namespace: string, query: string, data: object): Promise<any> {
         const connection = await getSession(type);
-        (await connection.raw(getQuery(namespace, query), data));
+        return (await connection.raw(getQuery(namespace, query), data))[0];
     }
 
     export async function insertReturning(type: TP, table: string, data: object): Promise<number> {

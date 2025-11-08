@@ -8,18 +8,24 @@ export default class Inquiry implements Bean {
     id: number;
     title: string;
     department_id: number;
-    message_id: number;
+    inquiry_user: string;
+    inquiry_phone: string;
+    inquiry_message: string;
     resolved: number;
     create_at: moment.Moment;
+    limit_at: moment.Moment;
     update_at: moment.Moment;
 
     constructor(data: any) {
         this.id = data.id;
-        this.title = data.title;
+        this.title = data.inquiry_message.substring(0, 25) + '...';
+        // this.title = data.title;
         this.department_id = data.department_id;
-        this.message_id = data.message_id;
-        this.resolved = data.resolved;
+        this.inquiry_user = data.inquiry_user;
+        this.inquiry_phone = data.inquiry_phone;
+        this.inquiry_message = data.inquiry_message;
         this.create_at = moment(data.create_at);
+        this.limit_at = moment(data.limit_at);
         this.update_at = moment(data.update_at);
     }
 
@@ -29,6 +35,15 @@ export default class Inquiry implements Bean {
             return null;
         }
         return new Inquiry(row);
+    }
+
+    static async update(request: RequestObject, inquiry: Inquiry): Promise<Inquiry> {
+        return new Inquiry(await request.update(DB.Type.main, 'inquiry', 'update', {
+            id: inquiry.id,
+            department_id: inquiry.department_id,
+            resolved: inquiry.resolved,
+            update_at: moment.now
+        }));
     }
 
     static async list(request: RequestObject, tag: number, page: number) {
@@ -44,8 +59,12 @@ export default class Inquiry implements Bean {
             ['id', this.id],
             ['title', this.title],
             ['department_id', this.department_id],
+            ['inquiry_user', this.inquiry_user],
+            ['inquiry_phone', this.inquiry_phone],
+            ['inquiry_message', this.inquiry_message],
             ['resolved', this.resolved === 1],
             ['create_at', this.create_at.unix()],
+            ['limit_at', this.limit_at.unix()],
             ['update_at', this.update_at.unix()],
         ]);
     }

@@ -76,7 +76,7 @@ export default class ObjectBase {
     public async select(type: DB.Type, namespace: string, query: string, data: object): Promise<any> {
         return await DB.select(await this.getSession(type), namespace, query, data);
     }
-    public async update(type: DB.Type, namespace: string, query: string, data: object): Promise<void> {
+    public async update(type: DB.Type, namespace: string, query: string, data: object): Promise<any> {
         return await DB.update(await this.getSession(type), namespace, query, data);
     }
     public async insert(type: DB.Type, table: string, data: object): Promise<void> {

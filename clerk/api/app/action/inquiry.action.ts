@@ -27,9 +27,29 @@ class InquiryAction extends Action_base {
 
         Print.json(request,
             Node.bean("inquiry", request.getData("inquiry")),
-            Node.beanList("inquiry_attachment", request.getData("inquiry_attachment")),
-            Node.beanList("inquiry_message", request.getData("inquiry_message")),
-            Node.beanList("inquiry_tag", request.getData("inquiry_tag"))
+            // Node.beanList("inquiry_attachment", request.getData("inquiry_attachment")),
+            // Node.beanList("inquiry_message", request.getData("inquiry_message")),
+            Node.beanList("inquiry_suggest_department", request.getData("inquiry_suggest_department")),
+            Node.beanList("inquiry_tag", request.getData("inquiry_tag")),
+        );
+    }
+
+    @ActionMethod({value: 'assign'})
+    async assign(request: RequestObject) {
+        const id = request.getParameterInt("id", 0);
+        const department_id = request.getParameterInt("department_id", 0);
+        if (id === 0 || department_id === 0) {
+            request.error("invalid_parameter")
+        }
+
+        await InquiryLogic.assign(request, id, department_id);
+
+        Print.json(request,
+            Node.bean("inquiry", request.getData("inquiry")),
+            // Node.beanList("inquiry_attachment", request.getData("inquiry_attachment")),
+            // Node.beanList("inquiry_message", request.getData("inquiry_message")),
+            Node.beanList("inquiry_suggest_department", request.getData("inquiry_suggest_department")),
+            Node.beanList("inquiry_tag", request.getData("inquiry_tag")),
         );
     }
 }

@@ -1,9 +1,8 @@
 import Inquiry from "@/data/inquiry/inquiry";
 import {TypeUtil} from "@/util/type.util";
 import {WebUtil} from "@/util/web.util";
-import InquiryAttachment from "@/data/inquiry/inquiry.attachment";
-import InquiryMessage from "@/data/inquiry/inquiry.message";
 import InquiryTag from "@/data/inquiry/inquiry.tag";
+import InquirySuggestDepartment from "@/data/inquiry/inquiry.suggest_department";
 
 // Inquiry 에 관한 axios 액션 정의
 export namespace InquiryService {
@@ -20,18 +19,16 @@ export namespace InquiryService {
                 id: id
             }
         })
-        const inquiry = new Inquiry(res.inquiry);
-        if (res.inquiry_attachment) {
-            inquiry.attachments = TypeUtil.toArray(res.inquiry_attachment).map(e => new InquiryAttachment(e))
-        }
-        if (res.inquiry_message) {
-            inquiry.messages = TypeUtil.toArray(res.inquiry_message).map(e => new InquiryMessage(e))
-        }
-        if (res.inquiry_tag) {
-            inquiry.tags = TypeUtil.toArray(res.inquiry_tag).map(e => new InquiryTag(e))
-        }
 
-        console.log(inquiry)
-        return inquiry;
+        return new Inquiry(res.inquiry).Init(res);
+    }
+    export async function assign(inquiry_id: number, department_id: number): Promise<Inquiry> {
+        const res = await WebUtil.get('/inquiry/assign', {
+            params: {
+                id: inquiry_id,
+                department_id: department_id
+            }
+        })
+        return new Inquiry(res.inquiry).Init(res);
     }
 }
