@@ -10,10 +10,16 @@ class InquiryAction:
     @action_method("process")
     def process(self, request: Request):
         inquiry_id = int(request.args['inquiry_id'])
-        InquiryLogic.process(request, inquiry_id)
-        return jsonify({
-            'data': 'process'
-        })
+        try:
+            InquiryLogic.process(request, inquiry_id)
+            return jsonify({
+                'response': 'success'
+            })
+        except Exception as e:
+            return jsonify({
+                'response': 'error',
+                'exception': str(e)
+            })
     #
     # @action_method('upload/demo')
     # def upload_demo(self, request: Request):

@@ -16,6 +16,19 @@ class InquiryAction extends Action_base {
         Print.json(request, Node.beanList("inquiry_list", request.getData("inquiry_list")));
     }
 
+    @ActionMethod({value: 'create'})
+    async create(request: RequestObject) {
+        const user = request.getParameterString("user", null);
+        const phone = request.getParameterString("phone", null);
+        const message = request.getParameterString("message", null);
+        if (user === null || phone === null || message === null) {
+            request.error("invalid_parameter")
+        }
+
+        await InquiryLogic.create(request, user, phone, message)
+        Print.json(request, Node.bean("inquiry", request.getData("inquiry")));
+    }
+
     @ActionMethod({value: 'detail'})
     async detail(request: RequestObject) {
         const id = request.getParameterInt("id", 0);

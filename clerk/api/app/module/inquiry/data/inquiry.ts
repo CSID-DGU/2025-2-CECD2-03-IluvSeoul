@@ -37,6 +37,16 @@ export default class Inquiry implements Bean {
         return new Inquiry(row);
     }
 
+    static async insert(request: RequestObject, inquiry: Inquiry): Promise<number> {
+        return await request.insertReturning(DB.Type.main, 'inquiry', {
+            // title: inquiry.title,
+            inquiry_user: inquiry.inquiry_user,
+            inquiry_phone: inquiry.inquiry_phone,
+            inquiry_message: inquiry.inquiry_message,
+            limit_at: inquiry.limit_at.toDate(),
+        })
+    }
+
     static async update(request: RequestObject, inquiry: Inquiry): Promise<Inquiry> {
         return new Inquiry(await request.update(DB.Type.main, 'inquiry', 'update', {
             id: inquiry.id,
