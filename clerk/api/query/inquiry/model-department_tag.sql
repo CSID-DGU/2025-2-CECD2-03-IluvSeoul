@@ -1,0 +1,2 @@
+SELECT department_id, tag_id
+FROM _department_tag

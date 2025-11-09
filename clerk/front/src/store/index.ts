@@ -3,6 +3,8 @@ import Department from "@/data/inquiry/department";
 import {ModelService} from "@/service/model";
 import {InquiryService} from "@/service/inquiry";
 import Tag from "@/data/inquiry/tag";
+import DepartmentGroup from "@/data/inquiry/department.group";
+import DepartmentTag from "@/data/inquiry/department.tag";
 
 export default createStore({
     state () {
@@ -12,6 +14,9 @@ export default createStore({
 
             selectedDepartment: 0,
             departmentMap: {},
+            departmentGroupIdMap: {},
+            departmentGroupMap: {},
+            departmentTagMap: {},
 
             selectedInquiry: 0,
             inquiries: []
@@ -38,6 +43,18 @@ export default createStore({
         getDepartments(state) {
             return Object.values(state.departmentMap);
         },
+        getDepartmentsByGroupId(state) {
+            return state.departmentGroupIdMap;
+        },
+        getDepartmentGroupMap(state) {
+            return state.departmentGroupMap;
+        },
+        getDepartmentGroups(state) {
+            return Object.values(state.departmentGroupMap);
+        },
+        getDepartmentTagMap(state) {
+            return state.departmentTagMap;
+        },
         // inquiry
         getInquiry(state) {
             return state.selectedInquiry;
@@ -50,8 +67,8 @@ export default createStore({
         setTag(state, tag) {
             state.selectedTag = tag;
         },
-        fetchTags(state, tags) {
-            state.tagMap = tags.reduce((a, b) => {
+        fetchTags(state, tags: Tag[]) {
+            state.tagMap = tags.reduce((a: { [key: number]: Tag }, b) => {
                 a[b.id] = b;
                 return a;
             }, {})
@@ -59,9 +76,31 @@ export default createStore({
         setDepartment(state, department) {
             state.selectedDepartment = department;
         },
-        fetchDepartments(state, departments) {
-            state.departmentMap = departments.reduce((a, b) => {
+        fetchDepartments(state, departments: Department[]) {
+            state.departmentMap = departments.reduce((a: { [key: number]: Department }, b) => {
                 a[b.id] = b;
+                return a;
+            }, {});
+            state.departmentGroupIdMap = departments.reduce((a: { [key: number]: Department[] }, b) => {
+                if (!Object.prototype.hasOwnProperty.call(a, b.group_id)) {
+                    a[b.group_id] = []
+                }
+                a[b.group_id].push(b);
+                return a;
+            }, {})
+        },
+        fetchDepartmentGroups(state, departmentGroups: DepartmentGroup[]) {
+            state.departmentGroupMap = departmentGroups.reduce((a: { [key: number]: DepartmentGroup }, b) => {
+                a[b.id] = b;
+                return a;
+            }, {});
+        },
+        fetchDepartmentTags(state, departmentTags: DepartmentTag[]) {
+            state.departmentTagMap = departmentTags.reduce((a: { [key: number]: DepartmentTag[] }, b) => {
+                if (!Object.prototype.hasOwnProperty.call(a, b.department_id)) {
+                    a[b.department_id] = []
+                }
+                a[b.department_id].push(b);
                 return a;
             }, {});
         },
@@ -81,6 +120,16 @@ export default createStore({
         fetchDepartments(state) {
             ModelService.get<Department>(Department, 'department')
                 .then(r => state.commit('fetchDepartments', r))
+                .catch(e => console.log(e))
+        },
+        fetchDepartmentGroups(state) {
+            ModelService.get<DepartmentGroup>(DepartmentGroup, 'department.group')
+                .then(r => state.commit('fetchDepartmentGroups', r))
+                .catch(e => console.log(e))
+        },
+        fetchDepartmentTags(state) {
+            ModelService.get<DepartmentTag>(DepartmentTag, 'department.tag')
+                .then(r => state.commit('fetchDepartmentTags', r))
                 .catch(e => console.log(e))
         },
         fetchInquiries(state) {

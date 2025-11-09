@@ -2,7 +2,7 @@ import Bean from "../../../../framework/action/data/bean";
 import {DB} from "../../../../framework/control/DB";
 import {TypeUtil} from "../../../../framework/utils/type.util";
 
-export default class Department implements Bean {
+export default class DepartmentGroup implements Bean {
     id: number;
     name: string;
 
@@ -10,9 +10,9 @@ export default class Department implements Bean {
         this.id = data.id;
         this.name = data.name;
     }
-    static async list(type: DB.TP): Promise<Array<Department>> {
-        const list = TypeUtil.toArray(await DB.list(type, 'inquiry', 'model-department', null));
-        return list.map(e => new Department(e))
+    static async list(type: DB.TP): Promise<Array<DepartmentGroup>> {
+        const list = TypeUtil.toArray(await DB.list(type, 'inquiry', 'model-department_group', null));
+        return list.map(e => new DepartmentGroup(e))
     }
     getResponseMap(): Map<string, any> {
         return new Map<string, any>([

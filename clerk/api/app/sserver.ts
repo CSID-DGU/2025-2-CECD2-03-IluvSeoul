@@ -16,6 +16,7 @@ export default class SServer {
 
                 const session = await DB.getSession(DB.Type.main);
                 await ModelLogic.reloadAll(session);
+                await DB.closeSession(session);
             })
             .catch(error => {
                 console.log(error);

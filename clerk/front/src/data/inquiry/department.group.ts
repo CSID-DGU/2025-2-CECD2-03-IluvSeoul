@@ -1,10 +1,8 @@
-export default class Department {
+export default class DepartmentGroup {
     id: number;
     name: string;
-    group_id: number;
     constructor(data: any) {
         this.id = data.id;
         this.name = data.name;
-        this.group_id = data.group_id;
     }
 }

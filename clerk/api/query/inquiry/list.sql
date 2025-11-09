@@ -8,3 +8,4 @@ SELECT id,
        limit_at,
        update_at
 FROM inquiry
+ORDER BY id DESC

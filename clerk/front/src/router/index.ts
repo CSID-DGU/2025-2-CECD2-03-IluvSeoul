@@ -1,11 +1,14 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
 
 // Inquiry
 import InquiryList from "@/components/inquiry/InquiryList.vue";
 import InquiryMain from "@/components/inquiry/InquiryMain.vue";
 import InquiryDetail from "@/components/inquiry/InquiryDetail.vue";
 
-const routes = [
+import ModelMain from "@/components/model/ModelMain.vue";
+import Department from "@/components/model/Department.vue";
+
+const routes: RouteRecordRaw[] = [
     {
         path: '/inquiry',
         component: InquiryMain,
@@ -20,6 +23,17 @@ const routes = [
                 name: 'inquiryDetail',
                 component: InquiryDetail
             }
+        ]
+    },
+    {
+        path: '/model',
+        component: ModelMain,
+        children: [
+            {
+                path: 'department',
+                name: 'departmentList',
+                component: Department
+            },
         ]
     }
     // new Routes('/inquiry/list', InquiryList).toRoute()

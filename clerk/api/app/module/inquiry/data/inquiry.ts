@@ -47,13 +47,13 @@ export default class Inquiry implements Bean {
         })
     }
 
-    static async update(request: RequestObject, inquiry: Inquiry): Promise<Inquiry> {
-        return new Inquiry(await request.update(DB.Type.main, 'inquiry', 'update', {
+    static async update(request: RequestObject, inquiry: Inquiry): Promise<void> {
+        await request.update(DB.Type.main, 'inquiry', 'update', {
             id: inquiry.id,
             department_id: inquiry.department_id,
             resolved: inquiry.resolved,
             update_at: moment.now
-        }));
+        });
     }
 
     static async list(request: RequestObject, tag: number, page: number) {
