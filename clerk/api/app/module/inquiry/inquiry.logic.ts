@@ -21,12 +21,12 @@ export namespace InquiryLogic {
         })
 
         inquiry.id = await Inquiry.insert(request, inquiry);
-        suggest(request, inquiry.id)
+        await suggest(request, inquiry.id)
 
         request.setData("inquiry", inquiry)
     }
 
-    export async function suggest(request: RequestObject, id: number): void {
+    export async function suggest(request: RequestObject, id: number): Promise<void> {
         axios.get(AI_URL + 'inquiry/process', {
             params: {
                 inquiry_id: id
