@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=development SETTING=dev nodemon -r dotenv/config index.ts dotenv_config_path=config/live.env",
+    "start": "cross-env NODE_ENV=development SETTING=dev DEBUG=knex:tx nodemon -r dotenv/config index.ts dotenv_config_path=config/live.env",
     "dev": "nodemon index.ts",
     "build": "tsc --build",
     "clean": "tsc --build --clean",

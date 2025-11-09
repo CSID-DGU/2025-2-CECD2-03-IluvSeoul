@@ -9,8 +9,9 @@ export namespace ModelLogic {
     const modelMap: Map<string, Array<Bean>> = new Map<string, Array<Bean>>()
     export async function reloadAll(session: DB.TP): Promise<void> {
         modelMap.clear();
-        ['department', 'tag', 'department.group', 'department.tag']
-            .forEach(t => reload(session, t))
+        for (const t of ['department', 'tag', 'department.group', 'department.tag']) {
+            await reload(session, t);
+        }
     }
     export async function reload(session: DB.TP, type: string): Promise<void> {
         modelMap.set(type, await getBeanList(session, type))
