@@ -31,4 +31,18 @@ export namespace InquiryService {
         })
         return new Inquiry(res.inquiry).Init(res);
     }
+
+    export async function create(user: string, phone: string, message: string): Promise<Inquiry> {
+        const res = await WebUtil.post('/inquiry/create', Object.entries({
+            user: user,
+            phone: phone,
+            message: message
+        }).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+            .join('&'), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+        })
+        return new Inquiry(res.inquiry).Init(res);
+    }
 }

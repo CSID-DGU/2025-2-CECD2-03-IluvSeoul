@@ -7,6 +7,7 @@ import InquiryDetail from "@/components/inquiry/InquiryDetail.vue";
 
 import ModelMain from "@/components/model/ModelMain.vue";
 import Department from "@/components/model/Department.vue";
+import InquiryCreate from "@/components/inquiry/InquiryCreate.vue";
 
 const routes: RouteRecordRaw[] = [
     {
@@ -17,6 +18,11 @@ const routes: RouteRecordRaw[] = [
                 path: '',
                 name: 'inquiryList',
                 component: InquiryList
+            },
+            {
+                path: 'create',
+                name: 'inquiryCreate',
+                component: InquiryCreate
             },
             {
                 path: ':id',

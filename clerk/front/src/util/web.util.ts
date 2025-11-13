@@ -11,4 +11,14 @@ export namespace WebUtil {
             return null;
         }
     }
+
+    export async function post(url: string, query: string, config?: AxiosRequestConfig<any>): Promise<any> {
+        try {
+            const res = await axios.post(RestAPI.SERVER_DOMAIN + url, query, config)
+            return res.data.response;
+        } catch (error) {
+            console.log(error)
+            return null;
+        }
+    }
 }

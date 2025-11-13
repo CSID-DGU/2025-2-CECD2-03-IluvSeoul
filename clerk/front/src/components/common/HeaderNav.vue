@@ -9,6 +9,9 @@
                 <div class="navbar-nav">
                     <a class="nav-link" href="/model/department">부서 관리</a>
                 </div>
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/inquiry/create">문의 추가 - 데모용</a>
+                </div>
             </div>
             <div class="opened-inquiries">
                 <div v-for="inquiry in inquiries.filter(i => !i.resolved)" :key="inquiry.id" class="inquiry-item">
