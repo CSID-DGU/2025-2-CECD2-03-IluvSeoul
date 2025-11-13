@@ -24,7 +24,6 @@ def build_user_prompt(item: dict[str, object]) -> str:
         "담당부서": item.get("담당부서",""),
         "허용_태그_리스트": numbered
     }
-    print(json.dumps(content, ensure_ascii=False, indent=2))
     return json.dumps(content, ensure_ascii=False, indent=2)
 
 class InquiryLogic:
@@ -44,8 +43,8 @@ class InquiryLogic:
         tag_ids = data.get("tag_ids")
         if isinstance(tag_ids, list) and all(isinstance(x, int) for x in tag_ids):
             for i in tag_ids:
-                if 1 <= i <= len(TagMain.tag_list):
-                    tags.append(TagMain.tag_list[i - 1].name)
+                if TagMain.tag_id_map.get(i) is not None:
+                    tags.append(TagMain.tag_id_map[i])
 
         tags = list(set(tags))
         tag_id_list = [TagMain.tag_name_map[tag] for tag in tags]
