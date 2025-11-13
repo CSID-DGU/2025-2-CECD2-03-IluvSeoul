@@ -38,6 +38,7 @@
                                 <div class="list-group list-group-flush">
                                     <button type="button" class="list-group-item list-group-item-action"
                                             @click="selectDepartment(department)"
+                                            v-if="departmentByGroupId[departmentGroup.id]?.length ?? 0 > 0"
                                             v-for="department in departmentByGroupId[departmentGroup.id].filter((e: Department) => e.id > 0)">
                                         {{ department.name }}
                                     </button>
@@ -138,6 +139,7 @@ const modifyTagByName = (tag_name: string) => {
     if (tag_id === undefined)
         return DepartmentService.tag(department_id, null, tag_name, true).then(() => {
             $store.dispatch('fetchDepartmentTags')
+            $store.dispatch('fetchTags')
         })
     modifyTag(department_id, tag_id, true)
 }
@@ -145,6 +147,7 @@ const modifyTagByName = (tag_name: string) => {
 const modifyTag = (department_id: number, tag_id: number, is_add: boolean) => {
     DepartmentService.tag(department_id, tag_id, null, is_add).then(() => {
         $store.dispatch('fetchDepartmentTags')
+        $store.dispatch('fetchTags')
     })
 }
 
