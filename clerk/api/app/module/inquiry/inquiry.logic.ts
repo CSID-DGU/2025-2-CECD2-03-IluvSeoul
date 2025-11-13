@@ -27,11 +27,7 @@ export namespace InquiryLogic {
     }
 
     export async function suggest(request: RequestObject, id: number): Promise<void> {
-        axios.get(AI_URL + 'inquiry/process', {
-            params: {
-                inquiry_id: id
-            }
-        }).then(res => {
+        axios.get(AI_URL + 'inquiry/process?inquiry_id=' + id).then(res => {
             if (res.data.response !== 'success') {
                 Logger.error(res.data.exception)
             }
