@@ -1,3 +1,3 @@
 UPDATE _department
-SET `active`=false
+SET `active` = false
 WHERE id = :id;

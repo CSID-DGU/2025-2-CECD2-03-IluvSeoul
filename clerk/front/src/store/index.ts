@@ -27,7 +27,7 @@ export default createStore({
         getTag(state) {
             return state.selectedTag;
         },
-        getTagMap(state) {
+        getTagMap(state): { [key: number]: Tag } {
             return state.tagMap;
         },
         getTags(state) {

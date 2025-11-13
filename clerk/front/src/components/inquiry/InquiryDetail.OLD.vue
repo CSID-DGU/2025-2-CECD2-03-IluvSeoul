@@ -45,8 +45,7 @@
         </div>
 
         <div class="reply-section">
-        <textarea class="form-control" v-model="replyText"
-                  placeholder="답변을 입력하세요..."></textarea>
+            <textarea class="form-control" v-model="replyText" placeholder="답변을 입력하세요..."></textarea>
             <div class="reply-actions">
                 <button class="btn btn-primary">답변 보내기</button>
             </div>

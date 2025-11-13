@@ -18,12 +18,15 @@ export default class Department implements Bean {
         return list.map(e => new Department(e))
     }
 
-    static async insert(request: RequestObject, user: Department): Promise<void> {
+    static async insert(request: RequestObject, dpt: Department): Promise<void> {
         await request.insert(DB.Type.main, '_department', {
-            id: user.id,
-            name: user.name,
-            group_id: user.group_id,
+            name: dpt.name,
+            group_id: dpt.group_id,
         });
+    }
+
+    static async del(request: RequestObject, id: number): Promise<void> {
+        await request.delete(DB.Type.main, 'department', 'delete-department', {id: id});
     }
     getResponseMap(): Map<string, any> {
         return new Map<string, any>([

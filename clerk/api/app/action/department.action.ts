@@ -4,6 +4,7 @@ import RequestObject from "../../framework/object/request.object";
 import Print from "../../framework/utils/print.util";
 import {DepartmentLogic} from "../module/department/department.logic";
 import Node from "../../framework/action/data/node";
+import {TagLogic} from "../module/department/tag.logic";
 
 @Action({value: 'department', auth: Auth.unnecessary})
 class DepartmentAction {
@@ -36,11 +37,16 @@ class DepartmentAction {
     @ActionMethod({value: 'tag'})
     async tag(request: RequestObject) {
         const department_id = request.getParameterInt("department_id", 0);
-        const tag_id = request.getParameterInt("tag_id", 0);
+        let tag_id = request.getParameterInt("tag_id", 0);
+        const tag_name = request.getParameterString("tag_name", null);
         const is_add = request.getParameterInt("is_add", 0) === 1;
-        if (department_id === 0 || tag_id === 0) {
-            request.error("invalid_parameter");
+        if (department_id === 0 || tag_id === 0 && tag_name === null) {
+            request.error("invalid_parameter_" + [department_id, tag_id, tag_name].join('_'));
             return;
+        }
+
+        if (tag_name !== null) {
+            tag_id = await TagLogic.create(request, tag_name);
         }
 
         await DepartmentLogic.tag(request, department_id, tag_id, is_add);
