@@ -8,7 +8,7 @@ from app.module.inquiry.data.inquiry_tag import InquiryTag
 from app.module.tag.tag_main import TagMain
 from core.action.request import Request
 
-SYSTEM_PROMPT = """당신은 한국어 민원 텍스트에 어울리는 간결한 '단일 태그 목록'을 부여합니다.
+SYSTEM_PROMPT = """당신은 한국어 민원 텍스트에 간결한 '단일 태그 목록'을 부여합니다.
 규칙(엄격):
 - 반드시 제공된 허용 태그 목록에서만 선택(새 표현 금지)
 - 출력은 {"tag_ids":[...]} JSON 한 줄만

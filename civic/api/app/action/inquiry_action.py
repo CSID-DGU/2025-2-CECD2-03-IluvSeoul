@@ -12,7 +12,7 @@ class InquiryAction:
         inquiry_id = int(request.args['inquiry_id'])
         try:
             print(inquiry_id)
-            # InquiryLogic.process(request, inquiry_id)
+            InquiryLogic.process(request, inquiry_id)
             return jsonify({
                 'response': 'success'
             })
