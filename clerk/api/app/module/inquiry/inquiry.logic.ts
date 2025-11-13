@@ -21,6 +21,7 @@ export namespace InquiryLogic {
         })
 
         inquiry.id = await Inquiry.insert(request, inquiry);
+        await request.commitAll()
         await suggest(request, inquiry.id)
 
         request.setData("inquiry", inquiry)

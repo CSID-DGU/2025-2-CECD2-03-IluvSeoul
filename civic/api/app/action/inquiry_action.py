@@ -11,7 +11,8 @@ class InquiryAction:
     def process(self, request: Request):
         inquiry_id = int(request.args['inquiry_id'])
         try:
-            InquiryLogic.process(request, inquiry_id)
+            print(inquiry_id)
+            # InquiryLogic.process(request, inquiry_id)
             return jsonify({
                 'response': 'success'
             })
