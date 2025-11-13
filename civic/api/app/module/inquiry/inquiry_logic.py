@@ -13,11 +13,10 @@ SYSTEM_PROMPT = """당신은 한국어 민원 텍스트에 간결한 '단일 태
 - 반드시 제공된 허용 태그 목록에서만 선택(새 표현 금지)
 - 출력은 {"tag_ids":[...]} JSON 한 줄만
 - 각 항목 1~6개
-- 번호만
 """
 
 def build_user_prompt(item: dict[str, object]) -> str:
-    numbered = [f"{t.id}. {t.name}" for t in TagMain.tag_list]
+    numbered = [f"{t.name}" for t in TagMain.tag_list]
     content = {
         "민원내용": item.get("민원내용",""),
         "답변내용": item.get("답변내용",""),
@@ -39,20 +38,17 @@ class InquiryLogic:
         user_prompt = build_user_prompt(inquiry.to_dict())
         data = GPTMain.proc(SYSTEM_PROMPT, user_prompt)
 
-        tags: list[str] = []
+        tags: list[int] = []
         tag_ids = data.get("tag_ids")
-        if isinstance(tag_ids, list) and all(isinstance(x, int) for x in tag_ids):
+        if isinstance(tag_ids, list) and all(isinstance(x, str) for x in tag_ids):
             for i in tag_ids:
-                if TagMain.tag_id_map.get(i) is not None:
-                    tags.append(TagMain.tag_id_map[i])
+                if TagMain.tag_name_map.get(i) is not None:
+                    tags.append(TagMain.tag_name_map[i])
 
-        tags = list(set(tags))
-        tag_id_list = [TagMain.tag_name_map[tag] for tag in tags]
+        tag_id_list = list(set(tags))
 
         department_counter: dict[int, int] = {}
         for tag_id in tag_id_list:
-            print(tag_id)
-            print(DepartmentMain.tag_department_map)
             dpt = DepartmentMain.tag_department_map[tag_id]
             if dpt not in department_counter:
                 department_counter[dpt] = 0
