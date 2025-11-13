@@ -16,6 +16,7 @@ class InquiryAction:
                 'response': 'success'
             })
         except Exception as e:
+            print(e.with_traceback())
             return jsonify({
                 'response': 'error',
                 'exception': str(e)

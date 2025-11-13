@@ -8,7 +8,7 @@ from app.module.inquiry.data.inquiry_tag import InquiryTag
 from app.module.tag.tag_main import TagMain
 from core.action.request import Request
 
-SYSTEM_PROMPT = """당신은 한국어 민원 텍스트에 간결한 '단일 태그 목록'을 부여합니다.
+SYSTEM_PROMPT = """당신은 한국어 민원 텍스트에 어울리는 간결한 '단일 태그 목록'을 부여합니다.
 규칙(엄격):
 - 반드시 제공된 허용 태그 목록에서만 선택(새 표현 금지)
 - 출력은 {"tag_ids":[...]} JSON 한 줄만
@@ -24,6 +24,7 @@ def build_user_prompt(item: dict[str, object]) -> str:
         "담당부서": item.get("담당부서",""),
         "허용_태그_리스트": numbered
     }
+    print(json.dumps(content, ensure_ascii=False, indent=2))
     return json.dumps(content, ensure_ascii=False, indent=2)
 
 class InquiryLogic:
@@ -51,6 +52,8 @@ class InquiryLogic:
 
         department_counter: dict[int, int] = {}
         for tag_id in tag_id_list:
+            print(tag_id)
+            print(DepartmentMain.tag_department_map)
             dpt = DepartmentMain.tag_department_map[tag_id]
             if dpt not in department_counter:
                 department_counter[dpt] = 0
